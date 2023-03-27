@@ -1,9 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Dimensions,Button, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
+import DataInput from '../components/DataInput';
 import { Contents, Footer, Header } from '../components/Layout';
+import Test from '../components/Test';
+
 export default function App() {
-  const [text, onChangeText] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>
@@ -12,15 +14,7 @@ export default function App() {
         <Contents />
         <Footer />
 
-      {/* <TextInput
-      style={{borderWidth:1,padding:10,fontSize:20}}
-      placeholder="Enter a text..."
-      value={text}
-      onChange={onChangeText}
-      />
-      <Button title = "search" color = "#841584" />
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" /> */}
+
     </SafeAreaView>
   );
 }

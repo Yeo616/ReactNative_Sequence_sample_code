@@ -5,29 +5,92 @@ import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-nativ
 export default function Email(){
     const [text,setText] = useState('')
     const [underText,setUnderText] = useState('')
-    const [state,setState] = useState('상태창')
+    const [state,setState] = useState('Processing')
     const [backColor,setBackColor] =useState('gray')
-    const [error,setError] = useState('')
-    const [linkDisplay,setLinkDisplay] = useState('none')
+    const [linkDisplay,setLinkDisplay] = useState(true)
 
-    function serachBtn(){
-        setBackColor('green')
+    async function serachBtn(event){
+        event.preventDefault();
+        console.log('email: ',text)
+
+        if (text === ''){
+            setBackColor('red')
+            setState('Empty error')
+            setUnderText('email is required')
+            return
+        }
+
+        try{
+            console.log('email :',text)
+            const response = await fetch(`http://10.0.2.2:8000/get-email?email=${text}`);
+            console.log("response",response);
+                //응답이 정상적으로 완료되면
+            if (response.ok) {
+                const data = await response.json();
+                console.log("data : ", data);
+                
+                // 찾는 데이터가 없을 경우에
+                if (data.status === "non-exist") {
+                 // 데이터가 없으면, 입력페이지로 전환 시키기
+                     setLinkDisplay(false)
+
+                    setBackColor('orange')
+                    setState('No data')
+                    setUnderText( "Email has verified, but "+JSON.stringify(data.status))
+                    // localStorage.setItem("email", text);
+                    
+                    console.log("email exists : ", response.status);
+                }else{
+                    setBackColor('green')
+                    setState('done')
+                    setLinkDisplay(false)
+                    // localStorage.setItem("email", text);
+
+                    setUnderText(JSON.stringify(data.status))
+                }}
+        }catch(e){
+            // 응답이 정상이 아닐 경우, 버튼 색이 바뀜
+            setBackColor('red')
+            setState('Server Error')
+            setUnderText('error'+ e)
+            console.error("catch error : ", e);
+        }
     }
 
     return(
-        <View style={[styles.container,styles.contents]}>
+        <View style={styles.container}>
 
         <Text style={styles.text}>로그인한 이메일 : </Text>
-        <View style={{flexDirection:'row'}}>
-            <TextInput style={{...styles.textInput,flex:2}} value = {text} onChange={(event)=>{setText(event.target.value);}}>
+        <View style={{flexDirection:'row', alignItems:'center'}}>
+            <TextInput 
+                style={{...styles.textInput,flex:2}} 
+                placeholder = "Enter Email"
+                value = {text} 
+                onChangeText={(event)=>{setText(event);}}>
             </TextInput>
-            <Button title="search" style={{flex:1}} onPress ={serachBtn}/>
+            <Button size='lg' title="search" style={{flex:1}} onPress ={serachBtn}/>
         </View>
+        <Text>{underText}</Text>
 
-
+        {/* 동그라미 */}
         <TouchableOpacity style={{...styles.circle, backgroundColor:backColor}}>
-            <Text style={{color:'white', fontWeight:'bold'}}>Processing</Text>
+            <Text style={{color:'white', fontWeight:'bold'}}>{state}</Text>
         </TouchableOpacity>
+        <Button 
+                variant='contained'
+                color='secondary'
+                title='데이터 추가하기'
+                disabled ={linkDisplay}
+                disabledStyle ={{backgroundColor:'white'}}
+                disabledTitleStyle = {{color:'white'}}
+                buttonStyle={{
+                    borderColor: 'transparent',
+                    borderRadius: 5,
+                    margin: 5,
+                    maxWidth:200
+                  }}
+                // href='/input'
+                ></Button>
         </View>
     )
 }
@@ -40,23 +103,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height:80,
     },
-    header:{
-        flex:1,
-        backgroundColor:"#f1c40f",
-    },
-    contents:{
-        flex:3,
-        // backgroundColor:"#1abc9c",
-        height:640,
-    },
     textInput:{
-        backgroundColor:'lightgreen',
         height:50,
+        borderWidth:1,
         borderColor:'blue',
+        borderRadius:20,
         margin:10
     },
     circle:{
-        // flex:1,
         width: 100,
         height: 100,
         justifyContent: 'center',
@@ -65,7 +119,6 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         fontWeight: 'bold',
         margin:'3%',
-       
         shadowColor: "black",
         shadowOffset: {
           width: 1,
@@ -74,7 +127,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 5,
         elevation: 7,
-
     },
     footer:{
         flex:1,

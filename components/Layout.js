@@ -1,6 +1,7 @@
 import { Button } from '@rneui/themed';
 import React,{useState} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import DataInput from './DataInput';
 import Email from './Email';
 
 export const Header = () =>{
@@ -24,7 +25,8 @@ export const Contents = () =>{
     }
     return(
         <View style={[styles.container,styles.contents]}>
-            <Email />
+            {/* <Email /> */}
+            <DataInput />
         </View>
     )
 }
@@ -46,17 +48,17 @@ const styles = StyleSheet.create({
     },
     header:{
         flex:1,
-        backgroundColor:"#f1c40f",
+        backgroundColor:"#F5ECC8",
     },
     contents:{
         flex:3,
-        // backgroundColor:"#1abc9c",
+        backgroundColor:"white",
         height:640,
     },
     
     footer:{
         flex:1,
-        backgroundColor:"#3498db",
+        backgroundColor:"#DBEEF3",
     },
     text:{
         fontSize:26
