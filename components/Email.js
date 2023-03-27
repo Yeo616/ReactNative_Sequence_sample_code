@@ -9,6 +9,7 @@ export default function Email({navigation}){
     const [state,setState] = useState('Processing')
     const [backColor,setBackColor] =useState('gray')
     const [linkDisplay,setLinkDisplay] = useState(true)
+    const [dataBtn,setDataBtn] = useState('')
 
     async function serachBtn(event){
         event.preventDefault();
@@ -34,6 +35,7 @@ export default function Email({navigation}){
                 if (data.status === "non-exist") {
                  // 데이터가 없으면, 입력페이지로 전환 시키기
                     setLinkDisplay(false)
+                    setDataBtn('데이터 추가하기')
                     setBackColor('orange')
                     setState('No data')
                     setUnderText( "Email has verified, but "+JSON.stringify(data.status))
@@ -44,10 +46,15 @@ export default function Email({navigation}){
                     setBackColor('green')
                     setState('done')
                     setLinkDisplay(false)
-                    // localStorage.setItem("email", text);
+                    setDataBtn('데이터 수정하기')
 
                     setUnderText(JSON.stringify(data.status))
-                }}
+                }}else{
+                    setBackColor('red')
+                    setState('Wrong email')
+                    setUnderText('error'+ e)
+                    console.error("email error : ", e);
+                }
         }catch(e){
             // 응답이 정상이 아닐 경우, 버튼 색이 바뀜
             setBackColor('red')
@@ -82,7 +89,7 @@ export default function Email({navigation}){
             <Button 
                     variant='contained'
                     color='secondary'
-                    title='데이터 추가하기'
+                    title={dataBtn}
                     onPress={() => navigation.navigate('DataInput', {email: text})}
                     disabled ={linkDisplay}
                     buttonStyle={{

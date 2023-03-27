@@ -8,6 +8,7 @@ export default function DataInput({navigation, route}){
     const [backColor,setBackColor] =useState('gray')
     const [delDisplay,setDelDisplay] = useState(true)
     const [delBtnColor,setDelBtnColor] = useState('white')
+    const [delBtnText,setDelBtnText] = useState('')
 
     console.log(route)
     const email = route.params.email
@@ -42,6 +43,7 @@ export default function DataInput({navigation, route}){
             setBackColor("green");
             setState("success");
             setDelDisplay(false)
+            setDelBtnText('데이터 삭제하기')
             setDelBtnColor('secondary')
           }
         } catch (error) {
@@ -81,7 +83,6 @@ export default function DataInput({navigation, route}){
         setUnderText("error");
         console.error("catch error ");
       }
-
     }
 
     return(
@@ -110,7 +111,7 @@ export default function DataInput({navigation, route}){
 
         {/* 데이터 삭제하기 버튼 */}
         <Button 
-            title='데이터 삭제하기'
+            title={delBtnText}
             onPress={DelBtn}
             disabled={delDisplay}
             buttonStyle={{
@@ -122,8 +123,14 @@ export default function DataInput({navigation, route}){
             titleStyle={{
                 color: 'white',
             }}
+            
 />
-
+        {/* 데이터 추가하기 버튼 */}
+        <Button 
+         title='메인페이지로 돌아가기'
+         onPress={()=>{navigation.replace('Email')}}
+         style = {{backgroundColor:'orange',}}
+            ></Button>
         </View>
     )
 

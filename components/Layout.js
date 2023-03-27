@@ -6,8 +6,8 @@ import Email from './Email';
 
 export const Header = () =>{
     return(
-        <View >
-            <Text >Header</Text>
+        <View style={[styles.container,styles.header]}>
+            <Text style={styles.text}>Header</Text>
         </View>
     )
 }
@@ -35,9 +35,7 @@ const styles = StyleSheet.create({
         width:'100%',
         alignContent:'center',
         justifyContent: 'center',
-        height:80,
-        width:'100%'
-
+        
     },
     header:{
         // flex:1,
