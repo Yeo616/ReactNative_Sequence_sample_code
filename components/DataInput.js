@@ -7,6 +7,8 @@ export default function DataInput(){
     const [state,setState] = useState('Processing')
     const [backColor,setBackColor] =useState('gray')
     const [delDisplay,setDelDisplay] = useState(true)
+    const [delBtnColor,setDelBtnColor] = useState('white')
+
 
     const email = '123@example.com'
 
@@ -21,17 +23,12 @@ export default function DataInput(){
             return
         }
     
-        try {
-          // FormData 객체 생성
-          const formData = new FormData();
-          formData.append("info", text);
-          formData.append("email", email);
-      
+        try {  
           // Fetch API를 사용하여 요청 보내기
-          const response = await fetch(`http://10.0.2.2:8000/post-info`, {
+          const response = await fetch(`http://10.0.2.2:8000/post-info-body`, {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams(formData),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email, info: text }),
           });
           const data = await response.json();
       
@@ -44,6 +41,7 @@ export default function DataInput(){
             setBackColor("green");
             setState("success");
             setDelDisplay(false)
+            setDelBtnColor('secondary')
           }
         } catch (error) {
           // 응답이 정상이 아닐 경우,
@@ -57,8 +55,34 @@ export default function DataInput(){
 
     async function DelBtn(){
         // 삭제버튼
-        setState('deleted')
-        setBackColor('orange')
+        // let email = localStorage.getItem("email");
+        // console.log("email : ",email);
+    
+        // Fetch API를 사용하여 요청 보내기
+       const response = await fetch(`http://10.0.2.2:8000/delete-info?email=${email}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({"email":email}),
+      });
+    
+      //응답이 정상적으로 완료되면
+      if (response.ok) {
+        const data = await response.json();
+        setUnderText(JSON.stringify(data.status));
+        console.log("response : ", data.status);
+        
+        // 버튼 색 바뀌기
+        setBackColor("green");
+        setState("delete successfully");
+        setDelDisplay(false);
+    
+      } else{
+        setBackColor("red");
+        setState("connect error");
+        setUnderText("error");
+        console.error("catch error ");
+      }
+
     }
 
     return(
@@ -87,20 +111,20 @@ export default function DataInput(){
 
         {/* 데이터 삭제하기 버튼 */}
         <Button 
-                variant='contained'
-                color='secondary'
-                title='데이터 삭제하기'
-                disabled ={delDisplay}
-                disabledStyle ={{backgroundColor:'white'}}
-                disabledTitleStyle = {{color:'white'}}
-                buttonStyle={{
-                    borderColor: 'transparent',
-                    borderRadius: 5,
-                    margin: 5,
-                    maxWidth:200
-                  }}
-                  onPress={DelBtn}
-                ></Button>
+            title='데이터 삭제하기'
+            onPress={DelBtn}
+            disabled={delDisplay}
+            buttonStyle={{
+                backgroundColor: 'blue',
+                borderRadius: 5,
+                margin: 5,
+                maxWidth: 100,
+            }}
+            titleStyle={{
+                color: 'white',
+            }}
+/>
+
         </View>
     )
 

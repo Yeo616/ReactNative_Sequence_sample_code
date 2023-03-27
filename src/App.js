@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Dimensions,Button, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
 import DataInput from '../components/DataInput';
 import { Contents, Footer, Header } from '../components/Layout';
-import Test from '../components/Test';
 
 export default function App() {
 
@@ -13,8 +12,6 @@ export default function App() {
         <Header />
         <Contents />
         <Footer />
-
-
     </SafeAreaView>
   );
 }
@@ -25,5 +22,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    marginHorizontal: '5%',
   },
 });
