@@ -1,7 +1,7 @@
 import React,{useState} from "react";
-import { Button,StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { Dimensions,Button,StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
 
-export default function DataInput(){
+export default function DataInput({navigation, route}){
     const [text,setText] = useState('')
     const [underText,setUnderText] = useState('')
     const [state,setState] = useState('Processing')
@@ -9,8 +9,9 @@ export default function DataInput(){
     const [delDisplay,setDelDisplay] = useState(true)
     const [delBtnColor,setDelBtnColor] = useState('white')
 
-
-    const email = '123@example.com'
+    console.log(route)
+    const email = route.params.email
+    console.log('email : ', email)
 
     async function addBtn(event){
         // 데이터 추가 
@@ -55,8 +56,6 @@ export default function DataInput(){
 
     async function DelBtn(){
         // 삭제버튼
-        // let email = localStorage.getItem("email");
-        // console.log("email : ",email);
     
         // Fetch API를 사용하여 요청 보내기
        const response = await fetch(`http://10.0.2.2:8000/delete-info?email=${email}`, {
@@ -74,7 +73,7 @@ export default function DataInput(){
         // 버튼 색 바뀌기
         setBackColor("green");
         setState("delete successfully");
-        setDelDisplay(false);
+        setDelDisplay(true);
     
       } else{
         setBackColor("red");
@@ -87,18 +86,18 @@ export default function DataInput(){
 
     return(
         
-        <View style={styles.container}>
+        <View style={{...styles.container, margin:'5%'}}>
             <Text style={{...styles.text, fontSize:26, fontWeight:'bold'}}>데이터 입력 페이지 : </Text>
             <Text style={styles.text}>로그인 되어있는 이메일 : {email}</Text>
             <Text style={styles.text}>데이터 입력하여 DB에 등록 : </Text>
-            <View style={{flexDirection:'row', alignItems:'center'}}>
+            <View >
                 <TextInput 
                     placeholder="Enter Info"
-                    style={{...styles.textInput,flex:2}} 
+                    style={styles.textInput} 
                     value = {text} 
                     onChangeText={(event)=>{setText(event);}}>
                 </TextInput>
-                <Button size='lg' title="add" style={{flex:1, margin:3}} onPress ={addBtn}/>
+                <Button size='lg' title="add" style={{ margin:3}} onPress ={addBtn}/>
             </View>
 
         {/* 상태 텍스트 */}
@@ -129,13 +128,14 @@ export default function DataInput(){
     )
 
 }
+const windowWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
     container: {
-        width:'100%',
+        width:windowWidth,
         alignContent:'center',
         justifyContent: 'center',
-        height:80,
+        margin:'5%'
     },
     text:{
         marginTop:5,

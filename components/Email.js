@@ -2,7 +2,8 @@ import { Button } from '@rneui/themed';
 import React,{useState} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
 
-export default function Email(){
+export default function Email({navigation}){
+
     const [text,setText] = useState('')
     const [underText,setUnderText] = useState('')
     const [state,setState] = useState('Processing')
@@ -32,8 +33,7 @@ export default function Email(){
                 // 찾는 데이터가 없을 경우에
                 if (data.status === "non-exist") {
                  // 데이터가 없으면, 입력페이지로 전환 시키기
-                     setLinkDisplay(false)
-
+                    setLinkDisplay(false)
                     setBackColor('orange')
                     setState('No data')
                     setUnderText( "Email has verified, but "+JSON.stringify(data.status))
@@ -57,48 +57,52 @@ export default function Email(){
         }
     }
 
+
     return(
-        <View style={styles.container}>
+        <>
+            {/* <Text style={styles.text}>로그인한 이메일 : </Text> */}
+            {/* <View style={{flexDirection:'row', alignItems:'center'}}> */}
+            <View style={{margin:'5%'}}>
+                <TextInput 
+                    style={styles.textInput} 
+                    placeholder = "Enter Email"
+                    value = {text} 
+                    onChangeText={(event)=>{setText(event);}}>
+                </TextInput>
+                <Button size='lg' title="search" style={{flex:1}} onPress ={serachBtn}/>
+            </View>
+            <Text>{underText}</Text>
 
-        <Text style={styles.text}>로그인한 이메일 : </Text>
-        <View style={{flexDirection:'row', alignItems:'center'}}>
-            <TextInput 
-                style={{...styles.textInput,flex:2}} 
-                placeholder = "Enter Email"
-                value = {text} 
-                onChangeText={(event)=>{setText(event);}}>
-            </TextInput>
-            <Button size='lg' title="search" style={{flex:1}} onPress ={serachBtn}/>
-        </View>
-        <Text>{underText}</Text>
+            {/* 동그라미 */}
+            <TouchableOpacity style={{...styles.circle, backgroundColor:backColor}}>
+                <Text style={{color:'white', fontWeight:'bold'}}>{state}</Text>
+            </TouchableOpacity>
 
-        {/* 동그라미 */}
-        <TouchableOpacity style={{...styles.circle, backgroundColor:backColor}}>
-            <Text style={{color:'white', fontWeight:'bold'}}>{state}</Text>
-        </TouchableOpacity>
-        <Button 
-                variant='contained'
-                color='secondary'
-                title='데이터 추가하기'
-                disabled ={linkDisplay}
-                disabledStyle ={{backgroundColor:'white'}}
-                disabledTitleStyle = {{color:'white'}}
-                buttonStyle={{
-                    borderColor: 'transparent',
-                    borderRadius: 5,
-                    margin: 5,
-                    maxWidth:200
-                  }}
-                // href='/input'
-                ></Button>
-        </View>
+            {/* 데이터 추가하기 버튼 */}
+            <Button 
+                    variant='contained'
+                    color='secondary'
+                    title='데이터 추가하기'
+                    onPress={() => navigation.navigate('DataInput', {email: text})}
+                    disabled ={linkDisplay}
+                    buttonStyle={{
+                        backgroundColor: 'blue',
+                        borderRadius: 5,
+                        margin: 5,
+                        maxWidth: 200,
+                    }}
+                    titleStyle={{
+                        color: 'white',
+                    }}
+                    ></Button>
+        </>
     )
 }
 
 
 const styles = StyleSheet.create({
     container: {
-        width:'100%',
+        width:'95%',
         alignContent:'center',
         justifyContent: 'center',
         height:80,

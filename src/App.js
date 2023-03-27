@@ -1,27 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { Dimensions,Button, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
-import DataInput from '../components/DataInput';
+import { useWindowDimensions, Dimensions,Button, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Contents, Footer, Header } from '../components/Layout';
+import Navigation from '../navigation/Navigation';
+
 
 export default function App() {
-
+    const windowWidth = Dimensions.get("window").width;
+    
   return (
-    <SafeAreaView style={styles.container}>
-
-        <Header />
-        <Contents />
-        <Footer />
+    <SafeAreaView >
+    <View>
+    <View style = {{width:windowWidth, marginHorizontal:'5%'}}>
+    </View>
+        <Navigation />
+    </View>
     </SafeAreaView>
+        // <View style={{flex:1, backgroundColor:'red'}}>
+        //  {/* <Contents /> */}
+        //  {/* <Footer /> */}
+        // <Navigation />
+        // </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F3F3F3',
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: '5%',
+    width: '95%',
   },
+  navigator:{
+    width:'95%'
+  }
 });

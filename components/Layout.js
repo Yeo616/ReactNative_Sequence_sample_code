@@ -6,26 +6,17 @@ import Email from './Email';
 
 export const Header = () =>{
     return(
-        <View style={[styles.container,styles.header]}>
-            <Text style={styles.text}>Header</Text>
+        <View >
+            <Text >Header</Text>
         </View>
     )
 }
 
 export const Contents = () =>{
-    const [text,setText] = useState('')
-    const [underText,setUnderText] = useState('')
-    const [state,setState] = useState('상태창')
-    const [backColor,setBackColor] =useState('gray')
-    const [error,setError] = useState('')
-    const [linkDisplay,setLinkDisplay] = useState('none')
-
-    function serachBtn(){
-
-    }
+ 
     return(
         <View style={[styles.container,styles.contents]}>
-            {/* <Email /> */}
+            <Email />
             <DataInput />
         </View>
     )
@@ -45,19 +36,22 @@ const styles = StyleSheet.create({
         alignContent:'center',
         justifyContent: 'center',
         height:80,
+        width:'100%'
+
     },
     header:{
-        flex:1,
+        // flex:1,
         backgroundColor:"#F5ECC8",
+        width:'100%'
     },
     contents:{
-        flex:3,
+        // flex:3,
         backgroundColor:"white",
         height:640,
     },
     
     footer:{
-        flex:1,
+        // flex:1,
         backgroundColor:"#DBEEF3",
     },
     text:{
